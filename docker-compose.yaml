@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_DB: chain
+      POSTGRES_USER: chainadmin
+      POSTGRES_PASSWORD: chainadminpassword
+
+  web:
+    build:
+      context: .       
+    volumes:
+      - .:/agrichain
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
