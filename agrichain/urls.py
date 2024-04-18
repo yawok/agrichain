@@ -21,3 +21,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("chain.urls"))
 ]
+
+admin.site.site_header = "Agrichain"
+admin.site.site_title = "Agrichain"
+admin.site.index_title = "Agrichain Dashboard"

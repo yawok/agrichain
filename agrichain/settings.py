@@ -33,6 +33,7 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     "whitenoise.runserver_nostatic",
+    "cities_light",
     "chain",
     "rest_framework",
     "django.contrib.admin",
@@ -85,7 +86,7 @@ DATABASES = {
         "USER": 'chainadmin',
         'PASSWORD': 'chainadminpassword',
         'PORT': 5432,
-        'HOST': 'db'
+        'HOST': 'db' # Uncomment when running docker-compose build
     }
 }
 
@@ -134,3 +135,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 if not DEBUG:
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
+CITIES_LIGHT_TRANSLATION_LANGUAGES = ['en', 'fr', 'abbr']
+CITIES_LIGHT_INCLUDE_COUNTRIES = ['FR', 'BE']

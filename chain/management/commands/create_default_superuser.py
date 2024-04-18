@@ -7,7 +7,7 @@ EMAIL = "defaultadmin@chain.com"
 PASSWORD = "defaultAdminPassword"
 
 class Command(BaseCommand):
-	
+	""" For the purpose of creating a superuser before starting the app in a docker container. """
  
 	def handle(self, *args, **options):
 		if not User.objects.filter(username=USERNAME):

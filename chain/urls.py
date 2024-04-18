@@ -4,7 +4,7 @@ from .endpoints import endpoints, process_endpoints
 from rest_framework.urlpatterns import format_suffix_patterns
 
 urlpatterns = [
-    path("locations/", endpoints.locations),
+    path("locations/", endpoints.locations, name='home'),
     path("locations/<int:pk>/", endpoints.location),
     path("organisation-types/", endpoints.OrganizationTypeList.as_view()),
     path("transpotation-modes/", endpoints.TransportationModeList.as_view()),
@@ -25,6 +25,8 @@ urlpatterns = [
     path(
         "product-processes/<int:pk>/", process_endpoints.ProductProcessDetails.as_view()
     ),
+    path('qrcode/<int:pk>/', views.qrCode, name="qrcode"),
+    path('producthistory/<int:pk>/', views.product_history, name="producthistory")
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
