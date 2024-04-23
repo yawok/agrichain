@@ -2,9 +2,9 @@ from io import BytesIO
 from geopy.distance import geodesic
 from django.shortcuts import render
 from . import models
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 import qrcode
-import socket
+import socket, requests
 
 
 def index(request):
@@ -14,20 +14,28 @@ def index(request):
 
 
 def get_ip_address():
-    hostname = socket.gethostname()
-    ip_address = socket.gethostbyname(hostname)
+    """ Try and get the IP address or raise a 404 error. """
+    try: 
+        hostname = socket.gethostname()
+        ip_address = socket.gethostbyname(hostname)
+    except socket.gaierror:
+        raise Http404
+            
     return ip_address
 
 
 def qrCode(request, pk):
     process = models.Product.objects.get(pk=pk)
-    url = f"http://{get_ip_address()}:8000{process.get_product_history_url()}"
-    img = qrcode.make(url)
+    try: 
+        url = f"http://{get_ip_address()}:8000{process.get_product_history_url()}"
+        img = qrcode.make(url)
 
-    buffer = BytesIO()
-    img.save(buffer)
-    buffer.seek(0)
-    return HttpResponse(buffer.getvalue(), content_type="image/png")
+        buffer = BytesIO()
+        img.save(buffer)
+        buffer.seek(0)
+        return HttpResponse(buffer.getvalue(), content_type="image/png")
+    except Http404:
+        return render(request, 'chain/errors/qrcode_error.html')
 
 
 def get_carbon_footprint(coord1, coord2, co2perkilometer):
